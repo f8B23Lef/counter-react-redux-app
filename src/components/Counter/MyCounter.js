@@ -1,37 +1,32 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './MyCounter.css';
+import {
+  increment,
+  decrement,
+  incrementByAmount,
+  incrementByAmountAsync,
+  selectCount,
+} from '../../store/counterSlice';
 
 export function MyCounter() {
-  const [count, setCount] = useState(0);
   const [incrementAmount, setIncrementAmount] = useState(2);
 
-  const increment = () => {
-    setCount(count + 1)
-  }
-  
-  const decrement = () => {
-    setCount(count - 1)
-  }
-
-  const incrementByAmount = () => {
-    setCount(count + Number(incrementAmount))
-  }
-
-  const incrementByAmountAsync = () => {
-    
-  }
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
+  // console.log('count: ', count, useSelector((state) => state.counter.value));
 
   return (
     <div className='counter'>
       <div className='row'>
-        <button onClick={increment}>+</button>
+        <button onClick={() => dispatch(increment())}>+</button>
         <div>Count: {count}</div>
-        <button onClick={decrement}>-</button>
+        <button onClick={() => dispatch(decrement())}>-</button>
       </div>
       <div className='row'>
         <input value={incrementAmount} onChange={(e) => setIncrementAmount(e.target.value)}></input>
-        <button onClick={incrementByAmount}>Add amount</button>
-        <button onClick={incrementByAmountAsync}>Add async</button>
+        <button onClick={() => dispatch(incrementByAmount(Number(incrementAmount)))}>Add amount</button>
+        <button onClick={() => dispatch(incrementByAmountAsync(Number(incrementAmount)))}>Add async</button>
       </div>
     </div>
   )
